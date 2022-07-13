@@ -1,5 +1,4 @@
 <template>
-
   <!-- <div class="gallery">
     <div class="gallery-panel" v-for="photo in photos" :key="photo.id">
       <img :src="thumbUrl(photo.filename)" />
@@ -40,19 +39,20 @@ export default {
 </script>
 
 <style scoped>
-.events {
+/* .events {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
+} */
 
-.gallery {
+.events {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
-  grid-gap: 1rem;
+  /* grid-gap: 1rem; */
   max-width: 80rem;
   margin: 5rem auto;
-  padding: 0 5rem;
+  padding: 0 10rem;
+  align-items: center;
 }
 
 .gallery-panel img {
