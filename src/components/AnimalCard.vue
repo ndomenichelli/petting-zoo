@@ -5,6 +5,7 @@
   >
     <div class="event-card">
       <h4>{{ animal.name }}</h4>
+      <img class="image" :src="thumbUrl('logo.png')" />
       <div>{{ animal.type }}</div>
       <div>{{ animal.description }}</div>
       <div>{{ animal.birthdate }}</div>
@@ -14,12 +15,19 @@
 </template>
 
 <script>
+import testImage from "@/assets/images/logo.png";
 export default {
   name: "AnimalCard",
+  image: testImage,
   props: {
     animal: {
       type: Object,
       required: true,
+    },
+  },
+  methods: {
+    thumbUrl(filename) {
+      return require(`../assets/images/${filename}`);
     },
   },
 };
@@ -32,6 +40,11 @@ export default {
   cursor: pointer;
   border: 1px solid black;
   margin-bottom: 18px;
+}
+
+.image {
+  border: 1px solid black;
+  padding: 20px;
 }
 
 .event-link {

@@ -5,9 +5,9 @@
     </div>
   </div> -->
 
-  <div class="events">
+  <!-- <div class="events">
     <AnimalCard v-for="event in events" :key="event.id" :event="event" />
-  </div>
+  </div> -->
 
   <div class="animals">
     <AnimalCard v-for="animal in animals" :key="animal.id" :animal="animal" />
