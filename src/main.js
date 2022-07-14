@@ -11,11 +11,9 @@ const dbApp = initializeApp(firebaseConfig);
 const db = getDatabase(dbApp);
 
 /* eslint-disable */
-
 function getDb() {
     return db;
 }
-
 /* eslint-enable */
 
 createApp(App)

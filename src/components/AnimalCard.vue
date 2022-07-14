@@ -7,13 +7,18 @@
       Display event data
       <span> @{{ event.time }} on {{ event.date }} </span>
       <h4>{{ event.title }}</h4>
+      <!-- <h4>{{ animal.name }}</h4>
+      <span>{{ animal.type }}</span>
+      <span>{{ animal.description }}</span>
+      <span>{{ animal.birthdate }}</span>
+      <span>{{ animal.imageLink }}</span> -->
     </div>
   </router-link>
 </template>
 
 <script>
 export default {
-  name: "AnimalCard",
+  name: "EventCard",
   props: {
     event: {
       type: Object,
