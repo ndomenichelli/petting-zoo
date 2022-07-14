@@ -1,26 +1,23 @@
 <template>
   <router-link
     class="event-link"
-    :to="{ name: 'AnimalDetails', params: { id: event.id } }"
+    :to="{ name: 'AnimalDetails', params: { id: animal.id } }"
   >
     <div class="event-card">
-      Display event data
-      <span> @{{ event.time }} on {{ event.date }} </span>
-      <h4>{{ event.title }}</h4>
-      <!-- <h4>{{ animal.name }}</h4>
-      <span>{{ animal.type }}</span>
-      <span>{{ animal.description }}</span>
-      <span>{{ animal.birthdate }}</span>
-      <span>{{ animal.imageLink }}</span> -->
+      <h4>{{ animal.name }}</h4>
+      <div>{{ animal.type }}</div>
+      <div>{{ animal.description }}</div>
+      <div>{{ animal.birthdate }}</div>
+      <div>{{ animal.imageLink }}</div>
     </div>
   </router-link>
 </template>
 
 <script>
 export default {
-  name: "EventCard",
+  name: "AnimalCard",
   props: {
-    event: {
+    animal: {
       type: Object,
       required: true,
     },

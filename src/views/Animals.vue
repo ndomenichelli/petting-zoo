@@ -9,17 +9,17 @@
     <AnimalCard v-for="event in events" :key="event.id" :event="event" />
   </div>
 
-  <!-- <div class="animals">
+  <div class="animals">
     <AnimalCard v-for="animal in animals" :key="animal.id" :animal="animal" />
-  </div> -->
+  </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import AnimalCard from "../components/AnimalCard.vue";
-import EventService from "@/services/EventService.js";
+// import EventService from "@/services/EventService.js";
 // import { getDb } from "@/main.js";
-// import { onValue } from "@firebase/database";
+import { getDatabase, ref, onValue } from "@firebase/database";
 
 export default {
   // mixins: [getDb],
@@ -29,26 +29,29 @@ export default {
   },
   data() {
     return {
-      events: null,
+      animals: [],
     };
   },
   created() {
-    EventService.getEvents()
-      .then((response) => {
-        console.log("events: ", response.data);
-        this.events = response.data;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    // EventService.getEvents()
+    //   .then((response) => {
+    //     console.log("events: ", response.data);
+    //     this.events = response.data;
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
+    const db = getDatabase();
+    const animalsDb = ref(db, "animals");
+
+    onValue(animalsDb, (snapshot) => {
+      console.log(snapshot.val());
+
+      const data = snapshot.val();
+      this.animals.push(data);
+    });
   },
-  mounted() {
-    // const animalsDb = this.getDb().ref("animals");
-    // onValue(animalsDb, (snapshot) => {
-    //   const data = snapshot.val();
-    //   this.animals.push(data);
-    // });
-  },
+  mounted() {},
 };
 </script>
 
