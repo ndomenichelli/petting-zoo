@@ -5,7 +5,7 @@
   >
     <div class="event-card">
       <h4>{{ animal.name }}</h4>
-      <img class="image" :src="thumbUrl('logo.png')" />
+      <img class="image" :src="thumbUrl(animal.imageLink)" />
       <div>{{ animal.type }}</div>
       <div>{{ animal.description }}</div>
       <div>{{ animal.birthdate }}</div>
@@ -44,7 +44,10 @@ export default {
 
 .image {
   border: 1px solid black;
-  padding: 20px;
+  /* margin: auto; */
+  /* padding: auto; */
+  width: 100%;
+  height: 100%;
 }
 
 .event-link {

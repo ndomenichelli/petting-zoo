@@ -18,11 +18,9 @@
 // @ is an alias to /src
 import AnimalCard from "../components/AnimalCard.vue";
 // import EventService from "@/services/EventService.js";
-// import { getDb } from "@/main.js";
 import { getDatabase, ref, onValue } from "@firebase/database";
 
 export default {
-  // mixins: [getDb],
   name: "Animals",
   components: {
     AnimalCard,
@@ -41,14 +39,26 @@ export default {
     //   .catch((error) => {
     //     console.log(error);
     //   });
-    const db = getDatabase();
-    const animalsDb = ref(db, "animals");
 
-    onValue(animalsDb, (snapshot) => {
+    // const id = "-N7-RmuoTg7ulifdSkvY";
+
+    const db = getDatabase();
+    const animalsRef = ref(db, "animals/");
+    // const animalsRef = ref(db, "animals/" + id);
+
+
+    onValue(animalsRef, (snapshot) => {
       console.log(snapshot.val());
 
       const data = snapshot.val();
-      this.animals.push(data);
+
+      Object.entries(data).forEach(([animalKey, animalElement]) => {
+        console.log(animalKey);
+        this.animals.push(animalElement);
+      });
+
+      console.log(this.animals);
+
     });
   },
   mounted() {},
@@ -62,7 +72,7 @@ export default {
   align-items: center;
 } */
 
-.events {
+.animals {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
   /* grid-gap: 1rem; */
