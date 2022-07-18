@@ -1,14 +1,4 @@
 <template>
-  <!-- <div class="gallery">
-    <div class="gallery-panel" v-for="photo in photos" :key="photo.id">
-      <img :src="thumbUrl(photo.filename)" />
-    </div>
-  </div> -->
-
-  <!-- <div class="events">
-    <AnimalCard v-for="event in events" :key="event.id" :event="event" />
-  </div> -->
-
   <div class="animals">
     <AnimalCard v-for="animal in animals" :key="animal.id" :animal="animal" />
   </div>
@@ -31,21 +21,8 @@ export default {
     };
   },
   created() {
-    // EventService.getEvents()
-    //   .then((response) => {
-    //     console.log("events: ", response.data);
-    //     this.events = response.data;
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-
-    // const id = "-N7-RmuoTg7ulifdSkvY";
-
     const db = getDatabase();
     const animalsRef = ref(db, "animals/");
-    // const animalsRef = ref(db, "animals/" + id);
-
 
     onValue(animalsRef, (snapshot) => {
       console.log(snapshot.val());
@@ -58,7 +35,6 @@ export default {
       });
 
       console.log(this.animals);
-
     });
   },
   mounted() {},
@@ -66,12 +42,6 @@ export default {
 </script>
 
 <style scoped>
-/* .events {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-} */
-
 .animals {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
@@ -81,7 +51,6 @@ export default {
   padding: 0 10rem;
   align-items: center;
 }
-
 .gallery-panel img {
   width: 100%;
   height: 22vw;
