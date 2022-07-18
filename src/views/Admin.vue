@@ -1,5 +1,5 @@
 <template>
-  <b-card>
+  <div>
     <div class="admin">
       <h1>This is an admin page to add Animals</h1>
     </div>
@@ -26,39 +26,42 @@
         <input v-model="imageLink" class="form-control" />
       </div>
       <div>
-        <button>Send</button>
+        <button>Upload</button>
       </div>
-
-      <v-layout row>
-        <v-flex md6 offset-sm3>
-          <div>
-            <div>
-              <v-btn @click="click1">choose a photo</v-btn>
-              <input
-                type="file"
-                ref="input1"
-                style="display: none"
-                @change="previewImage"
-                accept="image/*"
-              />
-            </div>
-
-            <div v-if="imageData != null">
-              <img class="preview" height="268" width="356" :src="img1" />
-              <br />
-            </div>
-          </div>
-        </v-flex>
-      </v-layout>
     </form>
-  </b-card>
+    <div>
+      <div>
+        <div>
+          <div>
+            <button @click="click1">choose a photo</button>
+            <input
+              type="file"
+              ref="input1"
+              style="display: none"
+              @change="previewImage"
+              accept="image/*"
+            />
+          </div>
+
+          <div v-if="imageData != null">
+            <img class="preview" height="268" width="356" :src="img1" />
+            <br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-// @ is an alias to /src
-// import EventCard from "@/components/EventCard.vue";
-// import EventService from "@/services/EventService.js";
-import { getDatabase, ref, push, set } from "firebase/database";
+import { getDatabase, ref as dbRef, push, set } from "firebase/database";
+
+import {
+  getStorage,
+  uploadBytesResumable,
+  ref as storRef,
+  getDownloadURL,
+} from "firebase/storage";
 
 export default {
   name: "Admin",
@@ -75,20 +78,19 @@ export default {
       description: "",
       birthdate: "",
       imageLink: "",
+      image: "",
+      img1: "",
+      imageData: null,
     };
   },
   methods: {
     onSubmit() {
-      // let newAnimal = {
-      //   name: this.name,
-      //   type: this.type,
-      //   description: this.description,
-      //   birthdate: this.birthdate,
-      //   imageLink: this.imageLink,
-      // }
-
+      if (this.name == "") {
+        alert("enter name");
+        return;
+      }
       const db = getDatabase();
-      const animalsRef = ref(db, "animals");
+      const animalsRef = dbRef(db, "animals");
 
       const newAnimalsRef = push(animalsRef);
 
@@ -99,7 +101,72 @@ export default {
         description: this.description,
         birthdate: this.birthdate,
         imageLink: this.imageLink,
+        image: this.img1,
       });
+    },
+
+    click1() {
+      this.$refs.input1.click();
+    },
+
+    previewImage(event) {
+      console.log("previewImage");
+      this.uploadValue = 0;
+      this.img1 = null;
+      this.imageData = event.target.files[0];
+      this.onUpload();
+    },
+
+    onUpload() {
+      // console.log("onUpload");
+
+      this.img1 = null;
+      const storage = getStorage();
+
+      // console.log("onUpload getstorage");
+
+      const storageRef = storRef(storage, "animals");
+      const uploadTask = uploadBytesResumable(storageRef, this.imageData);
+
+      // console.log("onUpload 2");
+
+      // Register three observers:
+      // 1. 'state_changed' observer, called any time the state changes
+      // 2. Error observer, called on failure
+      // 3. Completion observer, called on successful completion
+      console.log("upload task check");
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          // Observe state change events such as progress, pause, and resume
+          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Upload is " + progress + "% done");
+          switch (snapshot.state) {
+            case "paused":
+              console.log("Upload is paused");
+              break;
+            case "running":
+              console.log("Upload is running");
+              break;
+          }
+        },
+        (error) => {
+          // Handle unsuccessful uploads
+          console.log("Unsuccessful Upload: " + error);
+        },
+        () => {
+          // Handle successful uploads on complete
+          // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+          this.uploadValue = 100;
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            console.log("File available at", downloadURL);
+            this.img1 = downloadURL;
+            console.log(this.img1);
+          });
+        }
+      );
     },
   },
   created() {
@@ -113,6 +180,4 @@ export default {
     //   });
   },
 };
-
-// const newAnimal = await firebase.firestore().collection('animals').add(animal);
 </script>
