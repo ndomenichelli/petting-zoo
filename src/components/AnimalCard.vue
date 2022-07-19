@@ -5,16 +5,21 @@
   >
     <div class="event-card">
       <h4>{{ animal.name }}</h4>
-      <img
+<<<<<<< HEAD
+      <!-- <img
         v-if="animal.imageLink != null"
         class="image"
         :src="thumbUrl(animal.imageLink)"
-      />
-      <img v-if="animal.image != null" class="image" :src="animal.image" />
+      /> -->
+      <img v-if="animal.image != ''" class="image" :src="animal.image" />
       <div>{{ animal.image }}</div>
       <div>Type of animal: {{ animal.type }}</div>
+=======
+      <img class="image" :src="thumbUrl(animal.imageLink)" />
+      <div>{{ animal.type }}</div>
+>>>>>>> parent of 712c988 (upload image showing)
       <div>{{ animal.description }}</div>
-      <div>Birthdate: {{ animal.birthdate }}</div>
+      <div>{{ animal.birthdate }}</div>
       <div>{{ animal.imageLink }}</div>
     </div>
   </router-link>
@@ -25,8 +30,6 @@ import testImage from "@/assets/images/logo.png";
 export default {
   name: "AnimalCard",
   image: testImage,
-  imageNash:
-    "https://firebasestorage.googleapis.com/v0/b/petting-zoo-c54f3.appspot.com/o/animals?alt=media&token=d8795d0d-1b59-4712-ac5d-e901fd8231b4",
   props: {
     animal: {
       type: Object,

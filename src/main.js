@@ -6,6 +6,7 @@ import { getDatabase } from "firebase/database";
 
 import firebaseConfig from '@/config/firebase.js';
 
+
 const dbApp = initializeApp(firebaseConfig);
 
 const db = getDatabase(dbApp);

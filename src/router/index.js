@@ -11,7 +11,7 @@ const routes = [
     component: StartScreen,
   },
   {
-    path: "/events",
+    path: "/animals",
     name: "Animals",
     component: Animals,
   },

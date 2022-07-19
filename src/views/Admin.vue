@@ -21,58 +21,67 @@
         <label>Birthdate:</label>
         <input v-model="birthdate" class="form-control" />
       </div>
-      <div class="form-group">
+      <!-- <div class="form-group">
         <label>imageLink:</label>
         <input v-model="imageLink" class="form-control" />
-      </div>
+      </div> -->
+      <!-- <div class="image-uploader">
+        <div>
+          <div>
+            <div>
+              <button @click="click1">choose a photo</button>
+              <input
+                type="file"
+                ref="input1"
+                style="display: none"
+                @change="previewImage"
+                accept="image/*"
+              />
+            </div>
+
+            <div v-if="imageData != null">
+              <img class="preview" height="268" width="356" :src="img1" />
+              <br />
+            </div>
+          </div>
+        </div>
+      </div> -->
       <div>
-        <button>Upload</button>
+        <DropZone />
+        <span class="file-info">File {{ dropzoneFile.name }}</span>
       </div>
     </form>
     <div>
-      <div>
-        <div>
-          <div>
-            <button @click="click1">choose a photo</button>
-            <input
-              type="file"
-              ref="input1"
-              style="display: none"
-              @change="previewImage"
-              accept="image/*"
-            />
-          </div>
-
-          <div v-if="imageData != null">
-            <img class="preview" height="268" width="356" :src="img1" />
-            <br />
-          </div>
-        </div>
-      </div>
+      <button @click="onSubmitForm">Upload Data</button>
     </div>
   </div>
 </template>
 
 <script>
 import { getDatabase, ref as dbRef, push, set } from "firebase/database";
-
 import {
   getStorage,
   uploadBytesResumable,
   ref as storRef,
   getDownloadURL,
 } from "firebase/storage";
+import DropZone from "@/components/DropZone.vue";
+import { ref as vueRef } from "vue";
 
 export default {
   name: "Admin",
   components: {
-    // EventCard,
+    DropZone,
+  },
+  setup() {
+    let dropzoneFile = vueRef("");
+    return { dropzoneFile };
   },
   data() {
     return {
       events: null,
       animals: [],
-      id: 0,
+      id: "a0",
       name: "",
       type: "",
       description: "",
@@ -84,7 +93,7 @@ export default {
     };
   },
   methods: {
-    onSubmit() {
+    onSubmitForm() {
       if (this.name == "") {
         alert("enter name");
         return;
@@ -125,7 +134,8 @@ export default {
 
       // console.log("onUpload getstorage");
 
-      const storageRef = storRef(storage, "animals");
+      const storageRef = storRef(storage, `animals/${this.imageData}`);
+
       const uploadTask = uploadBytesResumable(storageRef, this.imageData);
 
       // console.log("onUpload 2");
@@ -181,3 +191,5 @@ export default {
   },
 };
 </script>
+<style scoped lang="scss">
+</style>
